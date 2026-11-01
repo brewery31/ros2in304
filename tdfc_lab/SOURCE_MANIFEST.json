@@ -1,0 +1,71 @@
+{
+  "source_project": "/Users/brewery/workspace/stfc_1020",
+  "source_date": "2026-11-01",
+  "files": {
+    "tdfc_lab/research/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tdfc_lab/research/avo.py": "7eab237c9fabaec2dc277d7880424f650bbcdbf0b53fef1bab582aece105cd8d",
+    "tdfc_lab/research/avoidance.py": "aeaa4bbc7fcc56482a7e9a0371ba5ec0f72954e08af83e5e5beb6bd8fa9f6015",
+    "tdfc_lab/research/baseline_execution.py": "12280d80540dcefe4e87b73dcf15ff08d2831c446dade432249468cb6e5f0e2c",
+    "tdfc_lab/research/baselines.py": "d42e4449f02bf9aadfcd7691e9e1e76f4ef5d755dab8ecf4ee7d06c4fa815548",
+    "tdfc_lab/research/capacity.py": "9419075fe1fd9685414528d389b9faaff0c5faf8581b45618880e9ad67db5c3e",
+    "tdfc_lab/research/controller_comparison.py": "87cd1be248a3aef837aabd50e6e96a944a122ea8065db160204f267d62aa3b27",
+    "tdfc_lab/research/curve_catalog.py": "41f71fbe958b63c744d657e0345e385b6bf864a8e9d01de151b55224ec88c154",
+    "tdfc_lab/research/curve_ego_interface.py": "264d9f267d29757385f0641685cae5efbda4c60117b29625760726a451046547",
+    "tdfc_lab/research/curve_tasks.py": "c4704e13460e9c3d4e96505b9b93bf041c9ebf8614a7e5d69c49a3997d807fbe",
+    "tdfc_lab/research/directional.py": "72b8084074253e5607205719f2faa19af0d164566e422bcf76548ec3481b8f3a",
+    "tdfc_lab/research/directional_governor.py": "f5743fd79400545f081e0126b5330259d9d9ef8ead5ca2c7d60df7a8d3890a54",
+    "tdfc_lab/research/dynamics.py": "e067eaf599781934b37f101653ade7f36788112d0a11ddebcba8d65f47380fe1",
+    "tdfc_lab/research/energy.py": "d11afaf3969147e43735fbba4ab4cdfe3c2b2d2f907f80e9ee0c32e2afecc064",
+    "tdfc_lab/research/experiments.py": "0c61aaf7c2ebe28cd3b93901f55951695602b2e18eba7a434888f1e51f37eff7",
+    "tdfc_lab/research/geometry.py": "56aa1f24bddd9f343994aec47b157407cf55695346b6ab7255a606db438f936c",
+    "tdfc_lab/research/local_surface.py": "b74148f40d92c150623edac9d08e298bddb09f4078da12722924ded7c9dc8dc8",
+    "tdfc_lab/research/metrics.py": "f95a854b3d27f132b5e6621987351a088b0b6e75c943bb99d0fe7aae693e7eb6",
+    "tdfc_lab/research/observation_filter.py": "58c69e69b9d1ec0d799243e752c0d53b1c9869e732f612636a5e5af6ff59f8b5",
+    "tdfc_lab/research/orca_adapter.py": "02bf7a2cd7474f92baaa33daef180ea382c4dd2c23475d7538350e25fb31740e",
+    "tdfc_lab/research/orca_bridge.cc": "1e589fde4cad74efb9e7d74c247a2f0b197a0cb2a8bb9c25b8b9c0dd7f8dcca0",
+    "tdfc_lab/research/physical_execution.py": "0b7bb4743670dacecff21f1330822ca0a3ee0545eb4aad39c0e8852d969c4e46",
+    "tdfc_lab/research/physical_governor.py": "dc85d28b9ab193d3e6bc778804efd21a32eaec89c2d670c9b4686084c5fdceac",
+    "tdfc_lab/research/presets.py": "1464962127cfed1e121a2c0af8424d2c3f499db5b477ec37f001a8e344604f9c",
+    "tdfc_lab/research/sim_protocol.py": "61446c4b72d264bc83f803316d1b6c9852e48e2f206a4a7e9b99a783101d777f",
+    "tdfc_lab/research/stopping_governor.py": "309540f49aada06edf0985656b8e055b589fdf334fabdfe341e2b0df89cc6289",
+    "tdfc_lab/research/tree_baseline.py": "3547d4a82aea8ff40cafee90b3b92d7aae0f49d26abd2e8dcc4e1b9f5e4c9bc4"
+  },
+  "adaptations": {
+    "tdfc_lab/research/orca_adapter.py": "Only native-library lookup changed: adjacent offline library, then ament share/tdfc_lab/lib/liborca.so (supports symlink-install). Numerical implementation unchanged."
+  },
+  "scope": "Frozen research sources; not a flight-validated controller",
+  "reference_figure_sources": {
+    "placement_and_takeoff.png": {
+      "source": "/Users/brewery/workspace/stfc_1020/results/ground_to_formation_20261101/placement_and_takeoff.png",
+      "sha256": "f8528bdbeed5befa52e684704c132fcfcceca165a59fd74d8faee8f5ad3e940a",
+      "scope": "reference takeoff + previously archived formation simulation, not hardware"
+    },
+    "ground_to_shape_paths.png": {
+      "source": "/Users/brewery/workspace/stfc_1020/results/ground_to_formation_20261101/ground_to_shape_paths.png",
+      "sha256": "f119af0c250dbb2533bf3cfac2d35dd3533995bafc91450be40e897b2788d19e",
+      "scope": "reference takeoff + previously archived formation simulation, not hardware"
+    }
+  },
+  "third_party_files": {
+    "third_party/RVO2-3D/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "third_party/RVO2-3D/LICENSES/Apache-2.0.txt": "f9f956b5c4dccc7c30bbbf4800789b991138bb6bea7d8224790c90cc529a18d6",
+    "third_party/RVO2-3D/LICENSES/CC-BY-4.0.txt": "8456116391b8b1c75e951f1199e9494214dcefaf5a12065fc54f6d159a604fcc",
+    "third_party/RVO2-3D/LICENSES/CC-BY-SA-4.0.txt": "321586a6fd8dac3e6a46b00e56afc843fbd4faa9c952805a2e72c177a25270c9",
+    "third_party/RVO2-3D/LICENSES/CC0-1.0.txt": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+    "third_party/RVO2-3D/UPSTREAM_COMMIT": "4d4ae2ee29b8bd4272b49bf3f30a14d7aa7657b32599686e23b7cadd15aa6bc0",
+    "third_party/RVO2-3D/src/Agent.cc": "25f9c60e157803d015a8aea357b0bcc37f4de63a881aed6391b68f39850925a5",
+    "third_party/RVO2-3D/src/Agent.h": "af2b1f251f371ec09e519d3932588411eca6fabbc2ab1e8a18870c28a99ce589",
+    "third_party/RVO2-3D/src/BUILD.bazel": "ad33099c6848933af9c2aaef23d46998eb9b10b856c596b5a730bb43b825dfbc",
+    "third_party/RVO2-3D/src/CMakeLists.txt": "66da3b567f79ca39fb04b8f429c05f3a33ce86aaf037674ced1f97f9ac7f4555",
+    "third_party/RVO2-3D/src/KdTree.cc": "82f7711b943a51e1711a4152a9ae4a58b13866e466df90bad96c622d5f46c473",
+    "third_party/RVO2-3D/src/KdTree.h": "df8f13adb4075ec87a090fe788777353b342fa56ef0cc6e8c1c6aebd7c2eab97",
+    "third_party/RVO2-3D/src/Plane.cc": "d381c5499349d5d53e3b09bb173351a85482a5da08e0f72b3e802f1c14f1f947",
+    "third_party/RVO2-3D/src/Plane.h": "2e4679264a47e07ef02ec0f77c9a7bbbaf999cb6a1389a01b07f32f034e97ae1",
+    "third_party/RVO2-3D/src/RVO.h": "51d9b5c5b7d2e80c2eeb5657cb5593b47e0b308f52bf018f1d0164767aeaa792",
+    "third_party/RVO2-3D/src/RVOSimulator.cc": "2899c49e3241c994f92c1cda9e2edfe9e32fc6f60851b79bdb29edc3cdf80597",
+    "third_party/RVO2-3D/src/RVOSimulator.h": "1cc6e7216be10a4f9dcfc8d0d9125aac5643360f44a964346c2a1a88bfaf29f8",
+    "third_party/RVO2-3D/src/Vector3.cc": "7554a7826454067dff54671249c526cb048d7a11c3e2b6a3a6e2f5f3245bdc67",
+    "third_party/RVO2-3D/src/Vector3.h": "db49f47b5fee8d43edae42b9fee1cbe7a992731c8d2d72085b3979773bdd023a"
+  },
+  "third_party_scope": "Only RVO2-3D source, license files and original UPSTREAM_COMMIT copied; build and repository metadata omitted."
+}

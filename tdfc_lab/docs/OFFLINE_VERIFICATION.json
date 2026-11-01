@@ -1,0 +1,60 @@
+{
+  "status": "passed",
+  "scope": "three 4s archived replays, 2400 ego calls; three 4s exact-observation numerical smoke runs; not ROS or hardware",
+  "runs": [
+    {
+      "steps": 200,
+      "expected_compared": true,
+      "maximum_command_error": 0.0,
+      "scope": "offline aligned-observation replay only",
+      "kind": "ring",
+      "source_artifact": "selected_trial_rehearsal_957773e62cdb0de8.npz",
+      "source_artifact_sha256": "f57775e4cc67e200298d340174cea5135a1df4a6c0d21604c881104d4990d302",
+      "fixture_sha256": "07ec4712ddf7bd579d80aad6736b048441450a5cf9f4834b125b669d69b33104",
+      "smoke": {
+        "shape": "ring",
+        "steps": 200,
+        "min_distance_lower_m": 0.6273103879721098,
+        "max_actual_speed_mps": 0.2512990873017022,
+        "model": "original velocity-setpoint plant, NOT FullState hardware",
+        "hardware_flights": 0
+      }
+    },
+    {
+      "steps": 200,
+      "expected_compared": true,
+      "maximum_command_error": 0.0,
+      "scope": "offline aligned-observation replay only",
+      "kind": "tilted_ring",
+      "source_artifact": "selected_trial_rehearsal_442ccd17138bb415.npz",
+      "source_artifact_sha256": "119dfdd86820fd2c08ddc7479e4df7370fe1bd6c5b4793cb2a7e04e419100585",
+      "fixture_sha256": "962b0c0ba53bb12a0d5ab1812e6b78c33a067f7178c31b7799d0b769d6278382",
+      "smoke": {
+        "shape": "tilted_ring",
+        "steps": 200,
+        "min_distance_lower_m": 0.6153172823566126,
+        "max_actual_speed_mps": 0.297565665188009,
+        "model": "original velocity-setpoint plant, NOT FullState hardware",
+        "hardware_flights": 0
+      }
+    },
+    {
+      "steps": 200,
+      "expected_compared": true,
+      "maximum_command_error": 0.0,
+      "scope": "offline aligned-observation replay only",
+      "kind": "helix",
+      "source_artifact": "selected_trial_rehearsal_f19cde41eaa378f5.npz",
+      "source_artifact_sha256": "d18b8bb203a9119b504a5ccbc20210794ca22f225f2bb87bbb6bb6b24b58fa0a",
+      "fixture_sha256": "09e7ecd9bc910438852647a3923681140de7c6b407119187c746fe0e4a42f91c",
+      "smoke": {
+        "shape": "helix",
+        "steps": 200,
+        "min_distance_lower_m": 0.6965011687086273,
+        "max_actual_speed_mps": 0.2997699112789665,
+        "model": "original velocity-setpoint plant, NOT FullState hardware",
+        "hardware_flights": 0
+      }
+    }
+  ]
+}

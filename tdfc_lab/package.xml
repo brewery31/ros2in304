@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>tdfc_lab</name><version>0.1.0</version>
+  <description>Experimental curve controller, offline replay and observation-only ROS bridge.</description>
+  <maintainer email="brewery31@users.noreply.github.com">brewery31</maintainer>
+  <license>MIT</license><license>Apache-2.0</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
+  <exec_depend>rclpy</exec_depend><exec_depend>nav_msgs</exec_depend>
+  <exec_depend>crazyflie_interfaces</exec_depend><exec_depend>ament_index_python</exec_depend>
+  <exec_depend>python3-numpy</exec_depend><exec_depend>python3-scipy</exec_depend>
+  <test_depend>ament_cmake_pytest</test_depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>

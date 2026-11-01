@@ -1,5 +1,9 @@
 # ros2in304
 
+## TDFC 四机算法接入（新增）
+
+新增独立 [`tdfc_lab`](tdfc_lab/README.md) 包：冻结曲线控制器、ORCA 源码、四机场景草案、离线回放及仅观察 ROS 节点。当前只发布候选话题，不发送飞机指令；原机房配置与实验脚本未修改。使用说明及未完成的真机验证见该包 README。
+
 Crazyflie（crazyswarm2）无人机集群实验代码快照 —— 机房工作机 `/home/crazyswarm2/ros2_ws` 的工作现场导出，用于在其他机器上查看/复现。
 
 ## 来源

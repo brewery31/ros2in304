@@ -1,0 +1,197 @@
+{
+  "ring": {
+    "suite": "selected_trial_rehearsal",
+    "shape": "curve_demo_ring_n4",
+    "n_agents": 4,
+    "n_scale": 1,
+    "init": "settled_hover_square",
+    "seed": 2800,
+    "method": "curve_ours",
+    "variant": "selected_practical",
+    "params": {},
+    "sim": {
+      "execution_model": "physical_zoh",
+      "stopping_governor": true,
+      "governor_geometry": "directional",
+      "nominal_a_max": 0.8,
+      "orca_nonfinite_policy": "ego_brake",
+      "a": 0.8,
+      "d_safe": 0.5,
+      "v_max": 0.3,
+      "a_max": 1.0,
+      "margin": 0.08,
+      "actuator_tau": 0.1,
+      "position_sigma": 0.005,
+      "velocity_sigma": 0.02,
+      "delay_steps": 2
+    },
+    "control_points": 4096,
+    "eval_points": 32768,
+    "position_record_every": 10,
+    "curve_controller": {
+      "endpoint_cone": true
+    },
+    "observer_arm": "selected",
+    "observation_condition": "practical",
+    "research_mode": "observation_stress",
+    "log_observation_error": true,
+    "observation_processor": {
+      "smoothing_seconds": 0.0,
+      "predict_to_now": true
+    },
+    "full_trace": true,
+    "catalog_kind": "ring",
+    "hover_positions": [
+      [
+        -0.4485845128994365,
+        -0.44236168880255494,
+        1.2
+      ],
+      [
+        0.457268656296098,
+        -0.45405327081050934,
+        1.2
+      ],
+      [
+        0.4426555710476232,
+        0.4580079459020668,
+        1.2
+      ],
+      [
+        -0.447067662903992,
+        0.4572448994465713,
+        1.2
+      ]
+    ]
+  },
+  "tilted_ring": {
+    "suite": "selected_trial_rehearsal",
+    "shape": "curve_demo_tilted_ring_n4",
+    "n_agents": 4,
+    "n_scale": 1,
+    "init": "settled_hover_square",
+    "seed": 2800,
+    "method": "curve_ours",
+    "variant": "selected_practical",
+    "params": {},
+    "sim": {
+      "execution_model": "physical_zoh",
+      "stopping_governor": true,
+      "governor_geometry": "directional",
+      "nominal_a_max": 0.8,
+      "orca_nonfinite_policy": "ego_brake",
+      "a": 0.8,
+      "d_safe": 0.5,
+      "v_max": 0.3,
+      "a_max": 1.0,
+      "margin": 0.08,
+      "actuator_tau": 0.1,
+      "position_sigma": 0.005,
+      "velocity_sigma": 0.02,
+      "delay_steps": 2
+    },
+    "control_points": 4096,
+    "eval_points": 32768,
+    "position_record_every": 10,
+    "curve_controller": {
+      "endpoint_cone": true
+    },
+    "observer_arm": "selected",
+    "observation_condition": "practical",
+    "research_mode": "observation_stress",
+    "log_observation_error": true,
+    "observation_processor": {
+      "smoothing_seconds": 0.0,
+      "predict_to_now": true
+    },
+    "full_trace": true,
+    "catalog_kind": "tilted_ring",
+    "hover_positions": [
+      [
+        -0.4485845128994365,
+        -0.44236168880255494,
+        1.2
+      ],
+      [
+        0.457268656296098,
+        -0.45405327081050934,
+        1.2
+      ],
+      [
+        0.4426555710476232,
+        0.4580079459020668,
+        1.2
+      ],
+      [
+        -0.447067662903992,
+        0.4572448994465713,
+        1.2
+      ]
+    ]
+  },
+  "helix": {
+    "suite": "selected_trial_rehearsal",
+    "shape": "curve_demo_helix_n4",
+    "n_agents": 4,
+    "n_scale": 1,
+    "init": "settled_hover_square",
+    "seed": 2800,
+    "method": "curve_ours",
+    "variant": "selected_practical",
+    "params": {},
+    "sim": {
+      "execution_model": "physical_zoh",
+      "stopping_governor": true,
+      "governor_geometry": "directional",
+      "nominal_a_max": 0.8,
+      "orca_nonfinite_policy": "ego_brake",
+      "a": 0.8,
+      "d_safe": 0.5,
+      "v_max": 0.3,
+      "a_max": 1.0,
+      "margin": 0.08,
+      "actuator_tau": 0.1,
+      "position_sigma": 0.005,
+      "velocity_sigma": 0.02,
+      "delay_steps": 2
+    },
+    "control_points": 4096,
+    "eval_points": 32768,
+    "position_record_every": 10,
+    "curve_controller": {
+      "endpoint_cone": true
+    },
+    "observer_arm": "selected",
+    "observation_condition": "practical",
+    "research_mode": "observation_stress",
+    "log_observation_error": true,
+    "observation_processor": {
+      "smoothing_seconds": 0.0,
+      "predict_to_now": true
+    },
+    "full_trace": true,
+    "catalog_kind": "helix",
+    "hover_positions": [
+      [
+        -0.4485845128994365,
+        -0.44236168880255494,
+        1.2
+      ],
+      [
+        0.457268656296098,
+        -0.45405327081050934,
+        1.2
+      ],
+      [
+        0.4426555710476232,
+        0.4580079459020668,
+        1.2
+      ],
+      [
+        -0.447067662903992,
+        0.4572448994465713,
+        1.2
+      ]
+    ]
+  }
+}
