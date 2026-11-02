@@ -1,0 +1,42 @@
+{
+  "shape": "ring",
+  "agents": 4,
+  "seed": 2,
+  "steps": 3000,
+  "method": "curve_ours",
+  "min_distance_lower_m": 0.6286540892981073,
+  "max_actual_speed_mps": 0.2540324205330175,
+  "metrics": {
+    "mean_curve_error_m": 1.0239253220419725e-05,
+    "max_curve_error_m": 1.5833188788465782e-05,
+    "coverage_ratio_048m": 1.0,
+    "covering_radius_m": 0.3410881339986629
+  },
+  "first_held_success_s": 1.3,
+  "terminal_held_success": true,
+  "model": "physical velocity-setpoint model, NOT firmware SIL or hardware",
+  "hardware_flights": 0,
+  "final_positions": [
+    [
+      -0.31635831594015684,
+      -0.31385864390664137,
+      1.2
+    ],
+    [
+      0.31392664871988957,
+      -0.3162908407521394,
+      1.2
+    ],
+    [
+      -0.3139207422873492,
+      0.31629670225612727,
+      1.2
+    ],
+    [
+      0.3163430676015476,
+      0.31387400933294474,
+      1.2
+    ]
+  ],
+  "status": "completed"
+}

@@ -20,8 +20,11 @@ class CurveEgoInterface:
         if len(set(self.ids))!=len(self.ids) or ego_id not in self.ids:
             raise ValueError('unique tracked IDs and a valid ego ID required')
         self.ego=self.ids.index(ego_id);self.cfg=Settings(**task.get('sim',{}));self.time=None
-        kind,n=parse(task['shape'])
-        if kind not in ('ring','tilted_ring','helix','helix_flat','digit2','digit0','digit6','letterL','letterR') or n!=len(self.ids) or n!=task['n_agents'] or n>8:
+        if task['shape'].startswith('curve_letter_'):
+            from .stroke_geometry import parse_letter
+            letter,n=parse_letter(task['shape']);kind='stroke_'+letter
+        else:kind,n=parse(task['shape'])
+        if kind not in ('ring','tilted_ring','helix','helix_flat','digit2','digit0','digit6','letterL','letterR','stroke_R','stroke_A','stroke_L') or n!=len(self.ids) or n!=task['n_agents'] or n>8:
             raise ValueError('interface is restricted to selected <=8-agent curve tasks')
         if task['method']!='curve_ours' or task.get('research_mode')!='observation_stress':
             raise ValueError('explicit empirical curve task required')

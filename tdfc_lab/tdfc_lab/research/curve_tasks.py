@@ -26,6 +26,9 @@ def _parametric(shape,t):
 
 
 def curve_geometry(shape,control_points=4096,eval_points=32768):
+    if shape.startswith('curve_letter_'):
+        from .stroke_geometry import stroke_geometry
+        return stroke_geometry(shape,control_points,eval_points)
     dense=_parametric(shape,np.linspace(0,1,65537))
     arc=np.r_[0,np.cumsum(np.linalg.norm(np.diff(dense,axis=0),axis=1))];length=arc[-1]
     def sample(count,offset):
@@ -79,8 +82,13 @@ def curve_acceleration(p,v,cloud,prm,limit,endpoint_cone=False):
     tangential=np.sum(pair*tangent,axis=1)[:,None]*tangent
     endpoint=np.zeros(len(p),dtype=bool)
     if endpoint_cone and not cloud.meta.get('closed_curve',cloud.name=='curve_ring'):
-        first=indices==0;last=indices==cloud.m-1;endpoint=first|last
-        outward=(first&(np.sum(tangential*tangent,axis=1)<0))|(last&(np.sum(tangential*tangent,axis=1)>0))
+        if 'endpoint_mask' in cloud.meta:
+            endpoint=cloud.meta['endpoint_mask'][indices]
+            inward=cloud.meta['endpoint_inward'][indices]
+            outward=endpoint&(np.sum(tangential*inward,axis=1)<0)
+        else:
+            first=indices==0;last=indices==cloud.m-1;endpoint=first|last
+            outward=(first&(np.sum(tangential*tangent,axis=1)<0))|(last&(np.sum(tangential*tangent,axis=1)>0))
         # Tangent cone of the closed curve interval: never generate outward
         # redistribution at an endpoint. This is not an inertial invariance proof.
         tangential[outward]=0.

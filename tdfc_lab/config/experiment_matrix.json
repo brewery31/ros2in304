@@ -1,5 +1,5 @@
 {
-  "scope": "simulation first; real driver not enabled",
+  "scope": "same local curve/stroke control for all formations; no centralized matching; simulation first",
   "curves": [
     {
       "shape": "ring",
@@ -22,17 +22,20 @@
     {
       "shape": "R",
       "agents": 5,
-      "method": "assigned_five_landmarks"
+      "method": "curve_ours",
+      "target_type": "public_stroke_graph_no_assignment"
     },
     {
       "shape": "A",
       "agents": 5,
-      "method": "assigned_five_landmarks"
+      "method": "curve_ours",
+      "target_type": "public_stroke_graph_no_assignment"
     },
     {
       "shape": "L",
       "agents": 5,
-      "method": "assigned_five_landmarks"
+      "method": "curve_ours",
+      "target_type": "public_stroke_graph_no_assignment"
     }
   ]
 }

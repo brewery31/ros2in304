@@ -12,14 +12,16 @@ def load_task(shape, config=None, agents=4):
         from ament_index_python.packages import get_package_share_directory
         path = Path(get_package_share_directory('tdfc_lab')) / 'config/tasks.json'
     import copy
-    task = copy.deepcopy(json.loads(path.read_text())[shape])
-    if agents not in (4, 6):
-        raise ValueError('curve experiments support four or six agents')
-    if agents != 4:
+    letter=shape in ('R','A','L')
+    if (letter and agents!=5) or (not letter and agents not in (4,6)):
+        raise ValueError('letters require five agents; ring/helix require four or six')
+    task = copy.deepcopy(json.loads(path.read_text())['ring' if letter else shape])
+    if letter or agents != 4:
         from .scenarios import hover_grid
-        task['shape'] = f'curve_demo_{shape}_n{agents}'
+        task['shape'] = f'curve_letter_{shape}_n{agents}' if letter else f'curve_demo_{shape}_n{agents}'
         task['n_agents'] = agents
         task['hover_positions'] = hover_grid(agents).tolist()
+        task['catalog_kind'] = 'stroke_'+shape if letter else shape
     return task
 
 
@@ -77,8 +79,8 @@ class StateBuffer:
 class CandidateController:
     def __init__(self, task, names, local_max_age=.04):
         self.names = tuple(names)
-        if len(self.names) not in (4, 6) or len(set(self.names)) != len(self.names) or task['n_agents'] != len(self.names):
-            raise ValueError('four/six unique robot names matching the curve task required')
+        if len(self.names) not in (4,5,6) or len(set(self.names)) != len(self.names) or task['n_agents'] != len(self.names):
+            raise ValueError('four/five/six unique robot names matching the curve task required')
         self.dt = .02
         self.controllers = [CurveEgoInterface(task, ego_id=n, agent_ids=self.names,
                             max_local_velocity_age=local_max_age) for n in self.names]

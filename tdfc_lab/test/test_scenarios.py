@@ -31,9 +31,56 @@ class ScenarioTests(unittest.TestCase):
             StateBuffer(tuple(f'cf{i}' for i in range(n)))
         self.assertEqual(SceneController('ring',6).names[-1],'cfA')
         for s in ('R','A','L'):
-            p=letter_targets(s);d=np.linalg.norm(p[:,None]-p[None],axis=2);np.fill_diagonal(d,np.inf)
-            self.assertGreaterEqual(d.min(),.7-1e-12)
+            p=letter_targets(s)
             self.assertGreaterEqual(p[:,2].min(),.6-1e-12)
+
+    def test_letters_use_same_curve_controller_without_goal_slots(self):
+        from tdfc_lab.research.curve_tasks import curve_acceleration
+        for shape in ('R','A','L'):
+            scene=SceneController(shape,5)
+            self.assertEqual(scene.method,'curve_ours')
+            self.assertIsInstance(scene.curve,CandidateController)
+            self.assertFalse(hasattr(scene,'landmark'))
+            self.assertNotIn('assigned_goals',scene.task)
+            p=hover_grid(5)
+            with patch('tdfc_lab.research.curve_ego_interface.curve_acceleration',wraps=curve_acceleration) as nominal:
+                scene.command(p,np.zeros_like(p),0.)
+                self.assertEqual(nominal.call_count,5)
+
+    def test_letter_prior_is_weighted_strokes_not_five_assigned_targets(self):
+        from tdfc_lab.research.stroke_geometry import stroke_geometry,stroke_graph
+        for shape in ('R','A','L'):
+            cloud,ev=stroke_geometry(f'curve_letter_{shape}_n5')
+            self.assertEqual(cloud.m,4096)
+            self.assertAlmostEqual(ev.meta['quadrature_weights'].sum(),3.5)
+            vertices,edges=stroke_graph(shape)
+            degree=np.bincount(edges.ravel(),minlength=len(vertices))
+            self.assertEqual(cloud.meta['endpoint_mask'].sum(),(degree==1).sum())
+            np.testing.assert_allclose(np.linalg.norm(cloud.meta['tangents'],axis=1),1.)
+            self.assertTrue(cloud.meta['no_target_assignment'])
+        self.assertNotEqual(len(stroke_graph('R')[0]),5)
+        self.assertNotEqual(len(stroke_graph('L')[0]),5)
+
+    def test_letter_ego_ignores_unseen_robots_and_id_order(self):
+        from tdfc_lab.research.curve_ego_interface import CurveEgoInterface
+        task=load_task('A',agents=5);ids=tuple('abcde')
+        p=np.array([[0,0,1.2],[10,0,1.2],[20,0,1.2],[30,0,1.2],[40,0,1.2]],float)
+        v=np.zeros_like(p)
+        def command(points,vel,order):
+            c=CurveEgoInterface(task,ego_id='a',agent_ids=order)
+            return c.step(agent_ids=order,position=points,velocity=vel,measurement_time=0.,decision_time=0.,
+                          own_velocity=np.zeros(3),own_velocity_time=0.)[0]
+        expected=command(p,v,ids)
+        changed=p.copy();changed[1:,1]=np.arange(4)*20
+        vv=v.copy();vv[1:,0]=.1
+        np.testing.assert_allclose(command(changed,vv,ids),expected,atol=1e-9,rtol=0)
+        permutation=[4,2,0,3,1]
+        np.testing.assert_allclose(command(p[permutation],v[permutation],tuple(ids[i] for i in permutation)),expected,atol=1e-9,rtol=0)
+
+    def test_formation_scenario_has_no_matching_or_optimizer(self):
+        text=(Path(__file__).parents[1]/'tdfc_lab/scenarios.py').read_text()
+        self.assertNotIn('linear_sum_assignment',text)
+        self.assertNotIn('scipy.optimize',text)
 
     def test_optional_shaping_cannot_modify_governor_output(self):
         task=copy.deepcopy(load_task('ring'));task['sim'].update(tangential_damping=.7,command_filter_tau=.2)

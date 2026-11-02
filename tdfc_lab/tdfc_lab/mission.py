@@ -3,7 +3,7 @@
 Not a flight driver. The reference model does not certify rigid-body tracking.
 """
 import numpy as np
-from .scenarios import SceneController, LandmarkController, hover_grid, scene_metrics
+from .scenarios import SceneController, ReturnToHomeController, hover_grid, scene_metrics
 from .research.physical_execution import track
 from .research.sim_protocol import clip_norm
 
@@ -40,7 +40,7 @@ class SimulationMission:
         self.duration = formation_seconds
         self.formation_summary = None
         self.formation_hold_start = None
-        self.return_controller = LandmarkController(self.home,assign=False)
+        self.return_controller = ReturnToHomeController(self.home)
 
     def _transition(self, phase, now):
         self.phase,self.phase_start,self.hold_start = phase,now,None
@@ -69,7 +69,7 @@ class SimulationMission:
             if round(elapsed/.02)%5 == 0 or elapsed >= self.duration:
                 metric=scene_metrics(self.shape,p,self.controller)
                 speed=float(np.linalg.norm(v,axis=1).max())
-                good=(metric.get('max_landmark_error_m',metric.get('max_curve_error_m',1.))<=.05
+                good=(metric['max_curve_error_m']<=.05
                       and metric.get('coverage_ratio_048m',1.)>=.9 and speed<=.05)
                 if not good:self.formation_hold_start=None
                 elif self.formation_hold_start is None:self.formation_hold_start=now

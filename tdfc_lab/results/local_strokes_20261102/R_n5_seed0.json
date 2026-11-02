@@ -1,0 +1,47 @@
+{
+  "shape": "R",
+  "agents": 5,
+  "seed": 0,
+  "steps": 3000,
+  "method": "curve_ours",
+  "min_distance_lower_m": 0.5798999999999994,
+  "max_actual_speed_mps": 0.29910858499223997,
+  "metrics": {
+    "mean_curve_error_m": 0.36821739552169186,
+    "max_curve_error_m": 0.7748263216095195,
+    "coverage_ratio_048m": 0.9614527122530736,
+    "covering_radius_m": 0.5142909748713929
+  },
+  "first_held_success_s": null,
+  "terminal_held_success": false,
+  "model": "physical velocity-setpoint model, NOT firmware SIL or hardware",
+  "hardware_flights": 0,
+  "final_positions": [
+    [
+      -0.39853905204024775,
+      -0.21987792081334828,
+      1.2
+    ],
+    [
+      0.17855591148656097,
+      -0.16189992162830244,
+      1.2
+    ],
+    [
+      1.137631357358982,
+      -0.15734394195001136,
+      1.2
+    ],
+    [
+      -0.38037446728832447,
+      0.3598465134808794,
+      1.2
+    ],
+    [
+      0.6565438256324606,
+      0.16662337119954476,
+      1.2
+    ]
+  ],
+  "status": "completed"
+}

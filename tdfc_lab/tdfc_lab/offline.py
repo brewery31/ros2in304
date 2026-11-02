@@ -28,7 +28,7 @@ def smoke(shape, steps, plot_path=None, csv_path=None, agents=4, seed=None, trac
         max_speed = max(max_speed,float(np.linalg.norm(v,axis=1).max()))
         if (k+1)%5 == 0:
             metric = scene_metrics(shape,p,controller)
-            good = (metric.get('max_landmark_error_m',metric.get('max_curve_error_m',1.)) <= .05
+            good = (metric['max_curve_error_m'] <= .05
                     and metric.get('coverage_ratio_048m',1.) >= .9
                     and np.linalg.norm(v,axis=1).max() <= .05)
             now = (k+1)*.02
@@ -72,7 +72,7 @@ def plot_trajectories(shape,trace,path):
         for a,b in letter_edges(shape):
             ax.plot(*goals[[a,b]].T,'--',color='.7',lw=1)
             front.plot(goals[[a,b],axes[0]],goals[[a,b],axes[1]],'--',color='.7',lw=1)
-        front.scatter(goals[:,axes[0]],goals[:,axes[1]],marker='x',color='black',s=65,label='target landmarks')
+        # Graph corners are not assigned robot goals; draw strokes only.
     else:
         ax.plot(*goals.T,'--',color='.65')
         front.plot(goals[:,axes[0]],goals[:,axes[1]],'--',color='.65',label='target curve')
@@ -129,7 +129,7 @@ def run_suite(output, steps=3000):
     matrix=[('ring',4),('ring',6),('helix',4),('helix',6),('R',5),('A',5),('L',5)]
     plan=dict(matrix=matrix,seeds=[0,1,2],steps=steps,dt=.02,initialization='common-height grid + <=1cm XY jitter',
               observations='exact synchronous numerical states',model='velocity-loop model, NOT firmware SIL',
-              success='last >=1s: curve max error<=5cm, C(0.48m)>=0.9 or letter max landmark error<=5cm; max speed<=0.05m/s')
+              success='last >=1s: curve max error<=5cm, C(0.48m)>=0.9 or letter stroke max error<=5cm; max speed<=0.05m/s')
     (output/'plan.json').write_text(json.dumps(plan,indent=2)+'\n')
     rows=[]
     for shape,n in matrix:
