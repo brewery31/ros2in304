@@ -21,7 +21,7 @@ class CurveEgoInterface:
             raise ValueError('unique tracked IDs and a valid ego ID required')
         self.ego=self.ids.index(ego_id);self.cfg=Settings(**task.get('sim',{}));self.time=None
         kind,n=parse(task['shape'])
-        if kind not in ('ring','tilted_ring','helix') or n!=len(self.ids) or n!=task['n_agents'] or n>8:
+        if kind not in ('ring','tilted_ring','helix','helix_flat','digit2','digit0','digit6','letterL','letterR') or n!=len(self.ids) or n!=task['n_agents'] or n>8:
             raise ValueError('interface is restricted to selected <=8-agent curve tasks')
         if task['method']!='curve_ours' or task.get('research_mode')!='observation_stress':
             raise ValueError('explicit empirical curve task required')
@@ -32,6 +32,10 @@ class CurveEgoInterface:
             raise ValueError('invalid execution lag/reserve')
         if not (c.execution_model=='physical_zoh' and c.safety and c.stopping_governor and c.governor_geometry=='directional'):
             raise ValueError('selected physical ORCA and directional-governor interface required')
+        if not np.isfinite(c.tangential_damping) or not 0<=c.tangential_damping<=1:
+            raise ValueError('tangential damping must be within [0,1]')
+        if not np.isfinite(c.command_filter_tau) or not 0<=c.command_filter_tau<=2:
+            raise ValueError('command filter time constant must be within [0,2] s')
         if c.normal_priority or c.tangent_priority or c.uncertain_tangent_speed or task.get('params'):
             raise ValueError('unsupported optional nominal/projection modes')
         for age in [max_observation_age,max_local_velocity_age]:
@@ -43,6 +47,7 @@ class CurveEgoInterface:
         if processor!=dict(smoothing_seconds=0.,predict_to_now=True):
             raise ValueError('only the frozen timestamp-extrapolation candidate is supported')
         self.observer=CausalCVFilter(v_max=c.v_max,**processor)
+        self.command_filtered=None
         self.governor=DirectionalGovernor();self.endpoint=task.get('curve_controller',{}).get('endpoint_cone',False)
 
     def step(self,*,agent_ids,position,velocity,measurement_time,decision_time,
@@ -72,6 +77,18 @@ class CurveEgoInterface:
         command,info=self.governor.command(pm,vm,actual_proxy,selected,dt=c.dt,a_max=c.a_max,tau=c.actuator_tau,
             v_max=c.v_max,r_vis=self.prm.r_vis_abs,d_safe=c.d_safe,margin=c.margin,surface_normal=normal,tangent_priority=False)
         result=command[self.ego].copy()
+        if c.tangential_damping>0:
+            # Damp the along-curve component only; the normal/directional
+            # governor terms are untouched. Experimental, see Settings.
+            tangent=self.cloud.meta['tangents'][self.cloud.tree.query(pm[self.ego])[1]]
+            result=result-c.tangential_damping*float(result@tangent)*tangent
+        if c.command_filter_tau>0:
+            if self.command_filtered is None:
+                self.command_filtered=result.copy()
+            else:
+                alpha=c.dt/(c.command_filter_tau+c.dt)
+                self.command_filtered=self.command_filtered+alpha*(result-self.command_filtered)
+            result=self.command_filtered.copy()
         if not np.isfinite(result).all():raise RuntimeError('invalid ego output')
         self.time=float(decision_time)
         return result,dict(ego_id=self.ids[self.ego],measurement_age_s=float(age),

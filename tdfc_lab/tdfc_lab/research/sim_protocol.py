@@ -246,6 +246,14 @@ class Settings:
     nominal_a_max:float|None=None
     native_acceleration_adapter:bool=False
     orca_nonfinite_policy:str='raise'
+    # Dissipates the tangential (along-curve) component of the ego command.
+    # 0 keeps the frozen behaviour; >0 damps the undamped sliding mode that
+    # ORCA kicks excite on the curve. Not yet flight-validated.
+    tangential_damping:float=0.
+    # First-order filter on the ego command. Preserves steady (DC) motion along
+    # the curve -- the thing tangential damping destroys -- while attenuating
+    # the ~1 Hz sliding limit cycle. Not yet flight-validated.
+    command_filter_tau:float=0.
 
 
 def execute(task, artifact_dir=None):
