@@ -1,0 +1,36 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+Visualization Manager:
+  Class: ""
+  Global Options:
+    Background Color: 245; 245; 245
+    Fixed Frame: world
+    Frame Rate: 30
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Floor grid
+      Enabled: true
+      Cell Size: 0.5
+      Plane Cell Count: 16
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Aircraft and target reference
+      Enabled: true
+      Topic:
+        Value: /tdfc_sim/markers
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+        Depth: 1
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 4.5
+      Pitch: 0.4
+      Yaw: 4.7
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 1
+Window Geometry:
+  Width: 1200
+  Height: 800

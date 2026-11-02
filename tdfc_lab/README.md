@@ -1,83 +1,96 @@
-# TDFC 四机接入准备（实验性、仅观察）
+# TDFC 机房实验：先仿真，后真机
 
-本包将已完成数值验证的曲线控制器迁入机房 ROS 2 Humble 工作区。它包含水平圆环、倾斜圆环、单圈螺旋线三个四机场景；暂不扩展六/八机。
+当前分支在 `581c418`（机房 dsh 改动）基础上修正。主实验是：
 
-**当前版本不会起飞、不会连接无线电，也不会发布飞机控制话题。** `tdfc_observe` 只订阅状态，并发布 `/tdfc/candidate/<机器人名>/cmd_full_state` 供检查。不要把候选话题重映射至飞机话题：FullState 接口转换、速度环、测量延迟和返航降落尚未真机验证。算法输出的数值回归与 ROS 真机闭环验证是两件事。
+| 形状 | 飞机数量 | 方法 |
+|---|---|---|
+| 水平圆环 ring | 4、6 | 连续曲线控制器 curve_ours |
+| 单圈空间螺旋线 helix | 4、6 | 连续曲线控制器 curve_ours |
+| 字母 R、A、L | 每个字母 5 架，分别运行 | 五个关键点的固定分配与跟踪 |
 
-## 目录与来源
+字母实验不等同于原曲线覆盖算法。五架只能给出稀疏骨架，R 尤其不可能表现完整圆弧笔画；图中的灰色连线只是目标参照，不是额外飞机或实际轨迹。采用竖直 X-Z 平面，建议从 -Y 方向看字母。
 
-- `tdfc_lab/research/`：2026-11-01 从研究工程复制的 Python 源码及 ORCA C++ 包装；`SOURCE_MANIFEST.json` 记录原始逐文件 SHA256。
-- `third_party/RVO2-3D/`：上游 ORCA 源码与许可证，重新在目标机编译，不拷贝 macOS 二进制。
-- 唯一研究源码适配是 `orca_adapter.py` 的共享库路径；算法数值逻辑未改。
-- `config/tasks.json`：已冻结的三场景参数。0.3 m/s、1 m/s²、0.5 m 间距、0.08 m 预留、0.1 s 速度环均为数值实验配置，尚未标定为硬件参数。
-- `config/crazyflies_four_candidate.yaml`：只启用 cf5–cf8，0.9 m 正方形地面摆位草案。保留原主配置不变。机体身份、场地坐标及 marker 必须实际核对；该文件不是飞行许可。
-- `docs/LAB_REVIEW_CN.md`：机房静态检查；另外两份日期文档是历史研究依据，原绝对路径和旧状态保留，当前部署状态以本文为准。
+## 机房：运行固件/刚体仿真
 
-## 本机离线验证（不需要 ROS）
+只运行下述 `tdfc_lab sim.launch.py`，不需另开原来的 crazyflie_server、动捕或真机脚本。
 
-在仓库根目录，用已安装 NumPy、SciPy 的 Python：
+先在仓库目录更新（本机改动需先自行提交保留，不要 reset）：
+
+```bash
+git switch codex/tdfc-lab-integration
+git pull --ff-only
+```
+
+在 ROS 工作区根目录编译。下例假定使用独立的 `~/tdfc_sim_ws`；如果仓库在原工作区，就改为对应的工作区路径。
+
+```bash
+source /opt/ros/humble/setup.bash
+cd ~/tdfc_sim_ws
+colcon build --symlink-install --packages-up-to tdfc_lab \
+  --cmake-args -DCMAKE_BUILD_TYPE=Release
+source install/setup.bash
+python3 -c "import cffirmware, rowan, numpy, scipy; print('SIL dependencies OK')"
+export ROS_LOCALHOST_ONLY=1
+export ROS_DOMAIN_ID=73
+```
+
+依次单独运行，每次实验结束后 Ctrl+C 退出再换场景：
+
+```bash
+ros2 launch tdfc_lab sim.launch.py shape:=ring agents:=4
+ros2 launch tdfc_lab sim.launch.py shape:=ring agents:=6
+ros2 launch tdfc_lab sim.launch.py shape:=helix agents:=4
+ros2 launch tdfc_lab sim.launch.py shape:=helix agents:=6
+ros2 launch tdfc_lab sim.launch.py shape:=R agents:=5
+ros2 launch tdfc_lab sim.launch.py shape:=A agents:=5
+ros2 launch tdfc_lab sim.launch.py shape:=L agents:=5
+```
+
+上述是七条备选命令，不要同时启动七个场景。默认自动打开 RViz；无显示器可加 `rviz:=False`。可加 `seed:=1` 或 `formation_seconds:=30.0`。
+
+每次自动建立 `~/tdfc_sim_runs/<时间戳>/`，含 `trajectory.csv`、`summary.json`，不能覆盖同名目录。阶段为：同高网格地面摆位 → 10 秒垂直起飞参考 → 根据状态确认悬停 → 成形 60 秒 → 返回各自分离起降柱 → 10 秒降落参考。起飞/返回/降落超时或检测到碰撞会终止本次仿真并保留失败结果，不伪造成功。
+
+**实现方式**：`tdfc_sim` 在同一进程直接调用本仓库的 `CrazyflieSIL`（cffirmware Mellinger）与 `crazyflie_sim.backend.np`（0.5 ms 刚体积分），每 20 ms 更新一次任务控制。不连接 radio，不读取飞机 URI，不调用真机 ROS 服务；发布 `/tdfc_sim/<name>/odom` 和 `/tdfc_sim/markers`。因此无需给旧仿真服务器补 odom 或用重映射将候选指令转发给飞机。
+
+默认观察是精确模拟状态，没有自动加入动捕噪声/延迟。速度设定值通过带 0.27m/s 参考速度预留的预测器转换为位置、速度、加速度参考；实际刚体速度另行记录，不能把参考限幅当实际约束证明。`summary.json` 中的最小距离是每 0.5 ms 的采样最小值，不是连续时间解析证书。
+
+**验证边界**：开发机没有 ROS、cffirmware、rowan。本地完成的是数值模型回归、任务逻辑与接口测试；这个固件/刚体入口仍需在机房运行验收。不要将未运行的 SIL 写成已通过，更不能据此起飞真机。
+
+## 任意电脑：先跑轻量数值仿真
+
+需要 C++ 编译器、NumPy、SciPy；画图另需 Matplotlib。在仓库根目录：
 
 ```bash
 sh tdfc_lab/scripts/build_offline_orca.sh
 PYTHONPATH=tdfc_lab python3 -m unittest discover -s tdfc_lab/test -v
-PYTHONPATH=tdfc_lab python3 -m tdfc_lab.offline --shape ring --steps 200
-PYTHONPATH=tdfc_lab python3 -m tdfc_lab.offline --shape tilted_ring --steps 200
-PYTHONPATH=tdfc_lab python3 -m tdfc_lab.offline --shape helix --steps 200
+PYTHONPATH=tdfc_lab python3 -m tdfc_lab.offline --shape ring --agents 6 --steps 3000 --plot /tmp/ring6.png
+PYTHONPATH=tdfc_lab python3 -m tdfc_lab.offline --shape helix --agents 4 --steps 3000 --plot /tmp/helix4.png
+PYTHONPATH=tdfc_lab python3 -m tdfc_lab.offline --shape R --agents 5 --steps 3000 --plot /tmp/R5.png
 ```
 
-13 项 unittest（其中一项覆盖三条轨迹），三份轨迹各 200 步，共 2400 次 ego 调用，与原归档速度命令逐位一致；不是重新跑出的替代真值。回归夹具是原轨迹首 4 s，不代表全部运行或真实飞行。独立的三个 4 s 冒烟运行检查原速度环模型的步内间距、有限性及速度限幅。结果见 `docs/OFFLINE_VERIFICATION.json`。
+编译过 ROS 包后也可用 `ros2 run tdfc_lab tdfc_offline` 替代 `PYTHONPATH=... python3 -m tdfc_lab.offline`。
 
-## 机房编译与只读观察
-
-地面摆位与路径参考如下：虚线起飞部分是理想参考，实线是既有形成仿真，不是完整起降闭环或实飞机录。返航与降落仍待设计。
-
-![地面摆位与错峰起飞参考](docs/figures/placement_and_takeoff.png)
-
-![三个场景的起飞参考与形成轨迹](docs/figures/ground_to_shape_paths.png)
-
-在已经安装 ROS Humble/Crazyswarm2 依赖的 Linux 工作区执行：
+全部七个场景，各三个固定种子：
 
 ```bash
-source /opt/ros/humble/setup.bash
-cd ~/ros2_ws
-colcon build --symlink-install --packages-select tdfc_lab
-source install/setup.bash
-# 前提：已有系统正在按核实后的配置提供 odom；本命令不启动服务器或飞机。
-ros2 run tdfc_lab tdfc_observe --ros-args \
-  -p shape:=ring \
-  -p robot_names:="['cf5','cf6','cf7','cf8']" \
-  -p expected_frame:=world \
-  -p log_path:=/tmp/tdfc_ring_candidate_001.jsonl
+ros2 run tdfc_lab tdfc_offline --suite --steps 3000 --out /tmp/tdfc_scenes_new
 ```
 
-可将 shape 改为 `tilted_ring` 或 `helix`。日志以排他模式新建，防止覆盖上一次结果；再次运行需更换文件名。这里不提供自动起飞 launch，避免误启动十机默认配置或旧脚本。
+输出目录必须不存在。所有运行都保留；固定 seed0 画图，不按结果挑最好案例。`--csv` 导出每步位置，`--trace` 导出 pos/vel/time NPZ。轻量模型从初始悬停开始，不包括真实起飞与刚体姿态控制。
 
-ROS 运行和 colcon 编译需要在机房验证；开发机只有 Python/C++ 离线检查，不能把其结果写成 ROS 集成已通过。
+本轮数值结果见 `results/scenes_20261102/`，判据见其 plan.json。原归档迁移回归仍使用三份 200 步观测夹具；跨平台 native ORCA 命令容差为 1e-7 m/s，并拒绝 NaN 期望值和真正的大偏差。
 
-## 状态、时间和控制语义
+## 修正与出处
 
-机器人按 YAML 名称映射，不从 URI 推算 `/cf10` 等话题；cfA 仍为 cfA。状态缓存以四机最新可用时刻的最小值为共同时间，用历史样本插值对齐，不用未来样本。每个 ego 另外只接收自身最新速度和时间。
+- 六机/五机不再只在底层“名义支持”，入口、ID、初始摆位、作图、回放均按 N 处理。
+- 阻尼/低通只作用于 ORCA 与 governor 之前的期望动作；最终 governor 输出不再被二次改写。默认仍关闭这两个实验开关，不凭单例自动采用新调参。
+- 字母从连续折线均匀铺展改为独立的五关键点任务，R、A、L 全部显式定义。
+- 五关键点任务一次使用 Hungarian 分配，不是无通信分布式分配；之后每架跟踪自己的目标。曲线实验仍是原曲线控制器。
+- 原四机 tasks.json 和旧数值夹具保留；六机场景由相同参数和明确的 0.7N 曲线长度规则生成。
+- SOURCE_MANIFEST.json 保存来源和修改说明；docs 中旧日期文档是历史依据，当前使用以本文为准。
 
-决策采用固定 20 ms 逻辑时间网格；错过周期、时钟跳变、超过草案 5 ms 调度偏差、错误坐标、陈旧数据或算法异常均锁止候选输出并记录原因，不伪造“安全零速度”。初始等待四机齐全。某机不再更新后，现有状态仅可在年龄门槛内使用，超过后锁止。
+## 后续真机
 
-当前 server 的 odom header 是主机接收时间，并非真实测量时间，因此缓存的年龄不包含未知的动捕/无线延迟。0.1 s 观测年龄、0.04 s 自身回传年龄只是观察阶段草案；0.04 s 与原离线“新鲜本机速度”假设不同，不能沿用原安全证书。实际速度值是否处于世界坐标仍需核对固件。
+观察节点 `tdfc_observe` 仍只发候选话题，不会发送飞机动作；其 ROS odom header 仍是接收时间，尚未完成真实测量时间标定。四/五/六机 YAML 草案仅供核对，SIL 不使用这些 URI。
 
-冻结控制器输出**速度设定值**；候选 FullState 的位置为预测当前位置加一个周期的设定速度，acc 为 `(设定速度-本机测量速度)/dt`。它不是原物理模型中的实际加速度，也可能大于 1 m/s²。该消息用于检查接口，不是可直接转发的飞行参考，更不能借此声称硬加速度约束已实现。所有候选日志都声明 `safety_certificate_applicable=false`。
-
-## 可移植回放格式
-
-```bash
-PYTHONPATH=tdfc_lab python3 -m tdfc_lab.offline --shape ring --replay aligned.npz
-```
-
-NPZ 不允许 pickle；必须包含 `agent_ids`（4 个字符串），`position`、`velocity`、`own_velocities`（K×4×3），`measurement_time`、`decision_time`（K），`own_times`（K×4）。位置和速度已经按共同测量时间对齐，时间单位秒、长度米、坐标 world Z-up。可选 `expected_command`（K×4×3）触发 1e-9 数值一致性检查。格式错误、陈旧/未来帧和非 20 ms 决策间隔会报错。原归档夹具的自身速度使用数值模型真值，仅用于迁移回归；不能把实测 ROS 接收速度称为无延迟真值。
-
-## 真机接通前剩余工作
-
-1. 确定四架机体、动捕身份、房间可用边界和起降柱，核实坐标/速度单位/marker 偏置。
-2. 采集状态记录，保留固件采样时间、主机接收时间，标定速度环与年龄门槛。
-3. 用录包驱动候选节点，验证实际频率、数据中断和调度开销。
-4. 明确 FullState 参考生成与闭环跟踪策略，先验证单机，再完整四机任务仿真。
-5. 新增受反馈监管的起飞—悬停—控制接管—返航至分离降落柱—降落状态机，以及服务完成/有效期处理和异常策略。`emergency` 只作为明确的停电机操作，不能替代正常降落。
-
-实飞按水平圆环→倾斜圆环→螺旋线推进，所有正式尝试、失败和中止都记录。当前实飞次数仍为 0。
+必须先在机房验证固件仿真，之后确认机体/动捕身份、房间边界、下洗间距、坐标、时钟和速度环，再做单机接口接管与真实起降状态机。当前分支没有开放 real 模式，实飞仍为 0。不能把 SIM 的关键点分配、速度环模型或精确状态保证当成实机安全证书。

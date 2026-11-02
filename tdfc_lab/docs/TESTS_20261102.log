@@ -1,0 +1,25 @@
+test_asynchronous_interpolation_and_separate_ego_times (test_adapter.AdapterTests.test_asynchronous_interpolation_and_separate_ego_times) ... ok
+test_fault_latches_instead_of_emitting_zero (test_adapter.AdapterTests.test_fault_latches_instead_of_emitting_zero) ... ok
+test_future_stale_missing_and_nonfinite_states (test_adapter.AdapterTests.test_future_stale_missing_and_nonfinite_states) ... ok
+test_name_mapping_preserves_hex_yaml_names (test_adapter.AdapterTests.test_name_mapping_preserves_hex_yaml_names) ... ok
+test_no_hardware_services_or_command_destinations (test_adapter.AdapterTests.test_no_hardware_services_or_command_destinations) ... ok
+test_original_interface_validation_still_enforced (test_adapter.AdapterTests.test_original_interface_validation_still_enforced) ... ok
+test_three_frozen_measured_observation_trajectories (test_archived_replay.ArchivedReplayTests.test_three_frozen_measured_observation_trajectories) ... ok
+test_ego_output_matches_joint_math_without_other_actual_velocities (test_research_interface.CurveEgoInterfaceTests.test_ego_output_matches_joint_math_without_other_actual_velocities) ... ok
+test_failed_input_does_not_consume_the_valid_first_frame (test_research_interface.CurveEgoInterfaceTests.test_failed_input_does_not_consume_the_valid_first_frame) ... ok
+test_non_nominal_cadence_is_not_silently_accepted (test_research_interface.CurveEgoInterfaceTests.test_non_nominal_cadence_is_not_silently_accepted) ... ok
+test_only_selected_shapes_and_processor_are_supported (test_research_interface.CurveEgoInterfaceTests.test_only_selected_shapes_and_processor_are_supported) ... ok
+test_orca_runtime_failure_is_loud_not_an_unchecked_zero_command (test_research_interface.CurveEgoInterfaceTests.test_orca_runtime_failure_is_loud_not_an_unchecked_zero_command) ... ok
+test_reordered_missing_and_invalid_frames_raise_before_output (test_research_interface.CurveEgoInterfaceTests.test_reordered_missing_and_invalid_frames_raise_before_output) ... ok
+test_goals_distinct_and_safe_grid_and_6th_name (test_scenarios.ScenarioTests.test_goals_distinct_and_safe_grid_and_6th_name) ... ok
+test_optional_shaping_cannot_modify_governor_output (test_scenarios.ScenarioTests.test_optional_shaping_cannot_modify_governor_output) ... ok
+test_polynomial_endpoints_and_reference_acceleration_bound (test_scenarios.ScenarioTests.test_polynomial_endpoints_and_reference_acceleration_bound) ... ok
+test_replay_rejects_nan_expectations_and_real_mismatch (test_scenarios.ScenarioTests.test_replay_rejects_nan_expectations_and_real_mismatch) ... ok
+test_simulation_entry_has_no_aircraft_command_transport (test_scenarios.ScenarioTests.test_simulation_entry_has_no_aircraft_command_transport) ... ok
+test_supported_matrix_and_rejection (test_scenarios.ScenarioTests.test_supported_matrix_and_rejection) ... ok
+test_takeoff_requires_feedback_and_return_precedes_land (test_scenarios.ScenarioTests.test_takeoff_requires_feedback_and_return_precedes_land) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.964s
+
+OK

@@ -6,12 +6,21 @@ import numpy as np
 from .research.curve_ego_interface import CurveEgoInterface
 
 
-def load_task(shape, config=None):
+def load_task(shape, config=None, agents=4):
     path = Path(config) if config else Path(__file__).parents[1] / 'config/tasks.json'
     if not path.exists():
         from ament_index_python.packages import get_package_share_directory
         path = Path(get_package_share_directory('tdfc_lab')) / 'config/tasks.json'
-    return json.loads(path.read_text())[shape]
+    import copy
+    task = copy.deepcopy(json.loads(path.read_text())[shape])
+    if agents not in (4, 6):
+        raise ValueError('curve experiments support four or six agents')
+    if agents != 4:
+        from .scenarios import hover_grid
+        task['shape'] = f'curve_demo_{shape}_n{agents}'
+        task['n_agents'] = agents
+        task['hover_positions'] = hover_grid(agents).tolist()
+    return task
 
 
 class StateBuffer:
@@ -22,8 +31,8 @@ class StateBuffer:
     """
     def __init__(self, names, max_age=.1, local_max_age=.04):
         self.names = tuple(names)
-        if len(self.names) != 4 or len(set(self.names)) != 4:
-            raise ValueError('exactly four unique configured robot names required')
+        if len(self.names) not in (4, 5, 6) or len(set(self.names)) != len(self.names):
+            raise ValueError('four, five or six unique configured robot names required')
         if not all(np.isfinite(a) and a >= 0 for a in (max_age, local_max_age)):
             raise ValueError('invalid age limits')
         self.max_age, self.local_max_age = max_age, local_max_age
@@ -45,7 +54,7 @@ class StateBuffer:
             raise ValueError('nonfinite decision time')
         eligible = [[s for s in self.history[n] if s[0] <= decision_time] for n in self.names]
         if any(not h for h in eligible):
-            raise ValueError('waiting for all four nonfuture states')
+            raise ValueError('waiting for all configured nonfuture states')
         latest = [h[-1] for h in eligible]
         common = min(s[0] for s in latest)
         if decision_time - common > self.max_age:
@@ -68,8 +77,8 @@ class StateBuffer:
 class CandidateController:
     def __init__(self, task, names, local_max_age=.04):
         self.names = tuple(names)
-        if len(self.names) != 4 or len(set(self.names)) != 4:
-            raise ValueError('four unique robot names required')
+        if len(self.names) not in (4, 6) or len(set(self.names)) != len(self.names) or task['n_agents'] != len(self.names):
+            raise ValueError('four/six unique robot names matching the curve task required')
         self.dt = .02
         self.controllers = [CurveEgoInterface(task, ego_id=n, agent_ids=self.names,
                             max_local_velocity_age=local_max_age) for n in self.names]

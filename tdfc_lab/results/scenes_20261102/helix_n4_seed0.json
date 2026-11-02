@@ -1,0 +1,42 @@
+{
+  "shape": "helix",
+  "agents": 4,
+  "seed": 0,
+  "steps": 3000,
+  "method": "curve_ours",
+  "min_distance_lower_m": 0.7028408540057798,
+  "max_actual_speed_mps": 0.29976386402860195,
+  "metrics": {
+    "mean_curve_error_m": 3.747609702599907e-05,
+    "max_curve_error_m": 4.27246093751563e-05,
+    "coverage_ratio_048m": 1.0,
+    "covering_radius_m": 0.459528784967015
+  },
+  "first_held_success_s": 3.4,
+  "terminal_held_success": true,
+  "model": "physical velocity-setpoint model, NOT firmware SIL or hardware",
+  "hardware_flights": 0,
+  "final_positions": [
+    [
+      -0.23713865382411395,
+      -0.35577034671645535,
+      1.3234760865628288
+    ],
+    [
+      0.4275591424446978,
+      -0.0006558680246365051,
+      1.5944777318133438
+    ],
+    [
+      -0.2365926301925977,
+      0.3561336941077419,
+      1.076331203273224
+    ],
+    [
+      0.427559645489271,
+      1.5534257405033243e-32,
+      0.8053295580099034
+    ]
+  ],
+  "status": "completed"
+}

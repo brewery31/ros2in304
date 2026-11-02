@@ -1,0 +1,5 @@
+{
+  "scope": "Only figures regenerated from saved seed0 state traces; no experiment data changed",
+  "renderer_file": "tdfc_lab/tdfc_lab/offline.py",
+  "renderer_sha256": "bf62bb204af66400def86d37802b5e29a1501b7e71f3acf3879c178e990552a2"
+}

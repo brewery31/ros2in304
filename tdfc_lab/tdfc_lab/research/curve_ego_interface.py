@@ -72,23 +72,22 @@ class CurveEgoInterface:
         acc,normal=curve_acceleration(pm,vm,self.cloud,self.prm,limit,endpoint_cone=self.endpoint)
         gain=c.dt if not c.actuator_tau else c.dt/(-np.expm1(-c.dt/c.actuator_tau))
         preferred=clip_norm(actual_proxy+gain*acc,c.v_max)
+        # Experimental shaping belongs BEFORE ORCA/governor. Never alter an
+        # already checked action afterwards. Defaults preserve frozen replay.
+        if c.tangential_damping>0:
+            tangent=self.cloud.meta['tangents'][self.cloud.tree.query(pm)[1]]
+            preferred-=c.tangential_damping*np.sum(preferred*tangent,axis=1)[:,None]*tangent
+        if c.command_filter_tau>0:
+            if self.command_filtered is None:self.command_filtered=preferred.copy()
+            else:
+                alpha=-np.expm1(-c.dt/c.command_filter_tau)
+                self.command_filtered+=alpha*(preferred-self.command_filtered)
+            preferred=self.command_filtered.copy()
         selected,residual=orca_velocity(pm,vm,preferred,dt=c.dt,r_vis=self.prm.r_vis_abs,d_safe=c.d_safe,
             v_max=c.v_max,horizon=c.horizon,margin=c.margin,nonfinite_policy=c.orca_nonfinite_policy)
         command,info=self.governor.command(pm,vm,actual_proxy,selected,dt=c.dt,a_max=c.a_max,tau=c.actuator_tau,
             v_max=c.v_max,r_vis=self.prm.r_vis_abs,d_safe=c.d_safe,margin=c.margin,surface_normal=normal,tangent_priority=False)
         result=command[self.ego].copy()
-        if c.tangential_damping>0:
-            # Damp the along-curve component only; the normal/directional
-            # governor terms are untouched. Experimental, see Settings.
-            tangent=self.cloud.meta['tangents'][self.cloud.tree.query(pm[self.ego])[1]]
-            result=result-c.tangential_damping*float(result@tangent)*tangent
-        if c.command_filter_tau>0:
-            if self.command_filtered is None:
-                self.command_filtered=result.copy()
-            else:
-                alpha=c.dt/(c.command_filter_tau+c.dt)
-                self.command_filtered=self.command_filtered+alpha*(result-self.command_filtered)
-            result=self.command_filtered.copy()
         if not np.isfinite(result).all():raise RuntimeError('invalid ego output')
         self.time=float(decision_time)
         return result,dict(ego_id=self.ids[self.ego],measurement_age_s=float(age),

@@ -1,17 +1,14 @@
 {
-  "date": "2026-11-01",
+  "date": "2026-11-02",
   "branch": "codex/tdfc-lab-integration",
-  "unit_tests_passed": 13,
-  "archived_replay_shapes": 3,
-  "archived_replay_steps_per_shape": 200,
-  "archived_ego_calls": 2400,
-  "maximum_command_error": 0.0,
-  "cpp_offline_build": "passed on macOS",
-  "colcon_linux_build": "not run: no ROS environment on development host",
-  "ros_runtime": "not run",
-  "hardware_commands_sent": 0,
+  "based_on": "581c418",
+  "unit_tests_passed": 20,
+  "numerical_runs": 21,
+  "numerical_terminal_successes": 21,
+  "firmware_sil_runs": 0,
   "hardware_flights": 0,
-  "unchanged_research_files": 26,
-  "original_lab_config_files_modified": false,
-  "scope": "offline-verified migration and observation-only ROS scaffolding"
+  "colcon_linux_build": "not run: ROS unavailable on development host",
+  "ros_runtime": "pending lab verification",
+  "original_lab_configs_modified": false,
+  "letter_method": "separate centralized initial assignment + fixed landmark tracking"
 }

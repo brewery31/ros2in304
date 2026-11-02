@@ -22,7 +22,7 @@ def main(args=None):
             names = tuple(self.get_parameter('robot_names').value)
             self.frame = self.get_parameter('expected_frame').value
             self.buffer = StateBuffer(names)
-            self.task = load_task(self.get_parameter('shape').value)
+            self.task = load_task(self.get_parameter('shape').value, agents=len(names))
             self.controller = CandidateController(self.task, names)
             self.started = None
             self.last_tick = -1

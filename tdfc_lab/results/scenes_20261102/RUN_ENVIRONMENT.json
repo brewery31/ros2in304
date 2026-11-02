@@ -1,0 +1,17 @@
+{
+  "python": "3.11.14 | packaged by conda-forge | (main, Oct 22 2025, 22:56:31) [Clang 19.1.7 ]",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "numpy": "2.2.6",
+  "scipy": "1.16.3",
+  "native_orca_sha256": "e403f8e943b1dfdb321d168ab04c6dadacfab5c8619c08c5b53e19641519f202",
+  "status": "numerical model only; ROS/cffirmware/rowan unavailable",
+  "postrun_source_changes": {
+    "current_sha256": {
+      "tdfc_lab/sil.py": "3905bac6d3a9f323b08fd4a0c7f750af3c54d0bfd7697d5cbf772198e638c089",
+      "tdfc_lab/offline.py": "bf62bb204af66400def86d37802b5e29a1501b7e71f3acf3879c178e990552a2",
+      "tdfc_lab/mission.py": "d9fb31b5918b0ea747652d0e9e34a04a0ce62d54f5b0245bb26180e6d7f545d9",
+      "tdfc_lab/research/sim_protocol.py": "812ebee7993618baa836fdd72eba69ef0350862f189f76744a0000416d3bc287"
+    },
+    "explanation": "After numerical runs: offline plot layout revised; mission SIL success reporting added; SIL summary fields added; Settings comments clarified. Numerical scene dynamics/controller/observations unchanged. Original run hashes retained."
+  }
+}

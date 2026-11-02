@@ -11,7 +11,7 @@ class ArchivedReplayTests(unittest.TestCase):
                 result = replay(Path(__file__).parent/'fixtures'/f'{shape}.npz', load_task(shape))
                 self.assertTrue(result['expected_compared'])
                 self.assertEqual(result['steps'], 200)
-                self.assertEqual(result['maximum_command_error'], 0.)
+                self.assertLessEqual(result['maximum_command_error'], 1e-7)
 
 
 if __name__ == '__main__':

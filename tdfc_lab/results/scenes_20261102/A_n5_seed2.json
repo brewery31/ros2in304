@@ -1,0 +1,45 @@
+{
+  "shape": "A",
+  "agents": 5,
+  "seed": 2,
+  "steps": 3000,
+  "method": "assigned_five_landmarks",
+  "min_distance_lower_m": 0.5827118579490856,
+  "max_actual_speed_mps": 0.2999999973279308,
+  "metrics": {
+    "max_landmark_error_m": 3.433175098891678e-15,
+    "rms_landmark_error_m": 3.025230420270189e-15
+  },
+  "first_held_success_s": 4.1,
+  "terminal_held_success": true,
+  "model": "physical velocity-setpoint model, NOT firmware SIL or hardware",
+  "hardware_flights": 0,
+  "final_positions": [
+    [
+      -0.3500000000000008,
+      -1.0191413060876045e-37,
+      1.2999999999999967
+    ],
+    [
+      0.34999999999999915,
+      -1.453206443876253e-37,
+      1.2999999999999967
+    ],
+    [
+      0.7000000000000016,
+      -2.111230391369666e-37,
+      0.6000000000000018
+    ],
+    [
+      -0.7000000000000016,
+      3.545790369456973e-37,
+      0.6000000000000018
+    ],
+    [
+      1.639895706056535e-37,
+      7.54633167089397e-37,
+      1.9999999999999967
+    ]
+  ],
+  "status": "completed"
+}

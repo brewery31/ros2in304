@@ -1,0 +1,159 @@
+# DRAFT ONLY. SIL does not use these URIs. Requires physical configuration review.
+robots:
+  cf1:
+    enabled: false
+    uri: udp://0.0.0.0:19850
+    initial_position:
+    - 0.0
+    - 0.0
+    - 0.0
+    type: cf21
+  cf2:
+    enabled: false
+    uri: udp://0.0.0.0:19851
+    initial_position:
+    - 1.0
+    - 0.0
+    - 0.0
+    type: cf21
+  cf3:
+    enabled: false
+    uri: radio://0/80/2M/E7E7E7E703
+    initial_position:
+    - 0.0
+    - -1.0
+    - 0.0
+    type: cf21
+  cf4:
+    enabled: false
+    uri: radio://0/80/2M/E7E7E7E704
+    initial_position:
+    - 2.0
+    - -1.0
+    - 0.0
+    type: cf21
+  cf5:
+    enabled: true
+    uri: radio://0/80/2M/E7E7E7E705
+    initial_position:
+    - -0.9
+    - -0.45
+    - 0.0
+    type: cf21
+  cf6:
+    enabled: true
+    uri: radio://1/90/2M/E7E7E7E706
+    initial_position:
+    - 0.0
+    - -0.45
+    - 0.0
+    type: cf21
+  cf7:
+    enabled: true
+    uri: radio://0/80/2M/E7E7E7E707
+    initial_position:
+    - 0.9
+    - -0.45
+    - 0.0
+    type: cf21
+  cf8:
+    enabled: true
+    uri: radio://1/90/2M/E7E7E7E708
+    initial_position:
+    - -0.9
+    - 0.45
+    - 0.0
+    type: cf21
+  cf9:
+    enabled: true
+    uri: radio://0/80/2M/E7E7E7E709
+    initial_position:
+    - 0.0
+    - 0.45
+    - 0.0
+    type: cf21
+  cfA:
+    enabled: true
+    uri: radio://1/90/2M/E7E7E7E70A
+    initial_position:
+    - 0.9
+    - 0.45
+    - 0.0
+    type: cf21
+  cfB:
+    enabled: false
+    uri: radio://0/80/2M/E7E7E7E70B
+    initial_position:
+    - 1.0
+    - 0.0
+    - 0.0
+    type: cf21
+  cfC:
+    enabled: false
+    uri: radio://1/90/2M/E7E7E7E70C
+    initial_position:
+    - 2.0
+    - 0.0
+    - 0.0
+    type: cf21
+  cfD:
+    enabled: false
+    uri: radio://0/80/2M/E7E7E7E70D
+    initial_position:
+    - -1.0
+    - 1.0
+    - 0.0
+    type: cf21
+  cfE:
+    enabled: false
+    uri: radio://1/90/2M/E7E7E7E70E
+    initial_position:
+    - 0.0
+    - 1.0
+    - 0.0
+    type: cf21
+  cf231:
+    enabled: false
+    uri: radio://0/80/2M/E7E7E7E7E7
+    initial_position:
+    - 0.0
+    - 0.0
+    - 0.0
+    type: cf21
+robot_types:
+  cf21:
+    motion_capture:
+      enabled: true
+      marker: default_single_marker
+      dynamics: default
+    big_quad: false
+    battery:
+      voltage_warning: 3.8
+      voltage_critical: 3.7
+  cf21_mocap_deck:
+    motion_capture:
+      enabled: true
+      marker: mocap_deck
+      dynamics: default
+    big_quad: false
+    battery:
+      voltage_warning: 3.8
+      voltage_critical: 3.7
+all:
+  firmware_logging:
+    enabled: true
+    default_topics:
+      odom:
+        frequency: 60
+  firmware_params:
+    commander:
+      enHighLevel: 1
+    stabilizer:
+      estimator: 2
+      controller: 2
+    locSrv:
+      extPosStdDev: 1e-3
+      extQuatStdDev: 0.05
+  broadcasts:
+    num_repeats: 15
+    delay_between_repeats_ms: 1

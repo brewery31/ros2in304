@@ -1,0 +1,38 @@
+{
+  "scope": "simulation first; real driver not enabled",
+  "curves": [
+    {
+      "shape": "ring",
+      "agents": 4
+    },
+    {
+      "shape": "ring",
+      "agents": 6
+    },
+    {
+      "shape": "helix",
+      "agents": 4
+    },
+    {
+      "shape": "helix",
+      "agents": 6
+    }
+  ],
+  "letters": [
+    {
+      "shape": "R",
+      "agents": 5,
+      "method": "assigned_five_landmarks"
+    },
+    {
+      "shape": "A",
+      "agents": 5,
+      "method": "assigned_five_landmarks"
+    },
+    {
+      "shape": "L",
+      "agents": 5,
+      "method": "assigned_five_landmarks"
+    }
+  ]
+}

@@ -31,7 +31,10 @@
     "tdfc_lab/research/tree_baseline.py": "3547d4a82aea8ff40cafee90b3b92d7aae0f49d26abd2e8dcc4e1b9f5e4c9bc4"
   },
   "adaptations": {
-    "tdfc_lab/research/orca_adapter.py": "Only native-library lookup changed: adjacent offline library, then ament share/tdfc_lab/lib/liborca.so (supports symlink-install). Numerical implementation unchanged."
+    "tdfc_lab/research/orca_adapter.py": "Only native-library lookup changed: adjacent offline library, then ament share/tdfc_lab/lib/liborca.so (supports symlink-install). Numerical implementation unchanged.",
+    "tdfc_lab/research/curve_catalog.py": "Inherited 581c418 experimental extra curves and flexible parse; seven selected scenarios validate populations separately. Legacy digit/letter curves not used for new five-landmark letters.",
+    "tdfc_lab/research/curve_ego_interface.py": "Inherited extra settings and kinds; moved optional shaping before ORCA/governor, defaults unchanged.",
+    "tdfc_lab/research/sim_protocol.py": "Inherited optional damping/filter Settings; updated comments to reflect pre-safety shaping."
   },
   "scope": "Frozen research sources; not a flight-validated controller",
   "reference_figure_sources": {
@@ -67,5 +70,39 @@
     "third_party/RVO2-3D/src/Vector3.cc": "7554a7826454067dff54671249c526cb048d7a11c3e2b6a3a6e2f5f3245bdc67",
     "third_party/RVO2-3D/src/Vector3.h": "db49f47b5fee8d43edae42b9fee1cbe7a992731c8d2d72085b3979773bdd023a"
   },
-  "third_party_scope": "Only RVO2-3D source, license files and original UPSTREAM_COMMIT copied; build and repository metadata omitted."
+  "third_party_scope": "Only RVO2-3D source, license files and original UPSTREAM_COMMIT copied; build and repository metadata omitted.",
+  "integration_revision": {
+    "date": "2026-11-02",
+    "base_commit": "581c4187fabbbba60a06a3d7302f297a31613928",
+    "current_research_sha256": {
+      "physical_execution.py": "0b7bb4743670dacecff21f1330822ca0a3ee0545eb4aad39c0e8852d969c4e46",
+      "curve_ego_interface.py": "6b0ca39da01b24aeb5b6bb782c096d1d132caba54142bbc19b77c837bbf6e645",
+      "metrics.py": "f95a854b3d27f132b5e6621987351a088b0b6e75c943bb99d0fe7aae693e7eb6",
+      "baselines.py": "d42e4449f02bf9aadfcd7691e9e1e76f4ef5d755dab8ecf4ee7d06c4fa815548",
+      "baseline_execution.py": "12280d80540dcefe4e87b73dcf15ff08d2831c446dade432249468cb6e5f0e2c",
+      "orca_adapter.py": "a63ef845b5501a33e3a77ef02acd3a1ae714630064d090a0f9248ab652a44bb2",
+      "capacity.py": "9419075fe1fd9685414528d389b9faaff0c5faf8581b45618880e9ad67db5c3e",
+      "physical_governor.py": "dc85d28b9ab193d3e6bc778804efd21a32eaec89c2d670c9b4686084c5fdceac",
+      "sim_protocol.py": "812ebee7993618baa836fdd72eba69ef0350862f189f76744a0000416d3bc287",
+      "curve_catalog.py": "261e185470c739c3827324b9d9738e8cbf70a14009ebe011ed66c556d2858542",
+      "presets.py": "1464962127cfed1e121a2c0af8424d2c3f499db5b477ec37f001a8e344604f9c",
+      "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "avo.py": "7eab237c9fabaec2dc277d7880424f650bbcdbf0b53fef1bab582aece105cd8d",
+      "observation_filter.py": "58c69e69b9d1ec0d799243e752c0d53b1c9869e732f612636a5e5af6ff59f8b5",
+      "energy.py": "d11afaf3969147e43735fbba4ab4cdfe3c2b2d2f907f80e9ee0c32e2afecc064",
+      "directional.py": "72b8084074253e5607205719f2faa19af0d164566e422bcf76548ec3481b8f3a",
+      "experiments.py": "0c61aaf7c2ebe28cd3b93901f55951695602b2e18eba7a434888f1e51f37eff7",
+      "curve_tasks.py": "c4704e13460e9c3d4e96505b9b93bf041c9ebf8614a7e5d69c49a3997d807fbe",
+      "geometry.py": "56aa1f24bddd9f343994aec47b157407cf55695346b6ab7255a606db438f936c",
+      "orca_bridge.cc": "1e589fde4cad74efb9e7d74c247a2f0b197a0cb2a8bb9c25b8b9c0dd7f8dcca0",
+      "controller_comparison.py": "87cd1be248a3aef837aabd50e6e96a944a122ea8065db160204f267d62aa3b27",
+      "local_surface.py": "b74148f40d92c150623edac9d08e298bddb09f4078da12722924ded7c9dc8dc8",
+      "stopping_governor.py": "309540f49aada06edf0985656b8e055b589fdf334fabdfe341e2b0df89cc6289",
+      "avoidance.py": "aeaa4bbc7fcc56482a7e9a0371ba5ec0f72954e08af83e5e5beb6bd8fa9f6015",
+      "directional_governor.py": "f5743fd79400545f081e0126b5330259d9d9ef8ead5ca2c7d60df7a8d3890a54",
+      "tree_baseline.py": "3547d4a82aea8ff40cafee90b3b92d7aae0f49d26abd2e8dcc4e1b9f5e4c9bc4",
+      "dynamics.py": "e067eaf599781934b37f101653ade7f36788112d0a11ddebcba8d65f47380fe1"
+    },
+    "hardware_flights": 0
+  }
 }
