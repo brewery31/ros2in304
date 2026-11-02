@@ -13,7 +13,7 @@ from tdfc_lab.offline import replay
 
 class ScenarioTests(unittest.TestCase):
     def test_supported_matrix_and_rejection(self):
-        for s,n in [('ring',4),('ring',6),('helix',4),('helix',6),('R',5),('A',5),('L',5)]:
+        for s,n in [('ring',4),('ring',6),('helix',4),('helix',6)]:
             validate_scene(s,n)
             scene=SceneController(s,n)
             self.assertEqual(len(scene.names),n)
@@ -21,7 +21,7 @@ class ScenarioTests(unittest.TestCase):
             u=scene.command(p,np.zeros_like(p),0.)
             self.assertEqual(u.shape,(n,3))
             self.assertLessEqual(np.linalg.norm(u,axis=1).max(),.3+1e-9)
-        for s,n in [('ring',5),('helix',8),('R',4),('A',6),('L',6),('other',5)]:
+        for s,n in [('ring',5),('helix',8),('R',5),('A',5),('L',5),('tilted_ring',4),('other',5)]:
             with self.assertRaises(ValueError):validate_scene(s,n)
 
     def test_goals_distinct_and_safe_grid_and_6th_name(self):
@@ -34,17 +34,15 @@ class ScenarioTests(unittest.TestCase):
             p=letter_targets(s)
             self.assertGreaterEqual(p[:,2].min(),.6-1e-12)
 
-    def test_letters_use_same_curve_controller_without_goal_slots(self):
+    def test_archived_letter_core_without_goal_slots(self):
         from tdfc_lab.research.curve_tasks import curve_acceleration
         for shape in ('R','A','L'):
-            scene=SceneController(shape,5)
-            self.assertEqual(scene.method,'curve_ours')
-            self.assertIsInstance(scene.curve,CandidateController)
-            self.assertFalse(hasattr(scene,'landmark'))
-            self.assertNotIn('assigned_goals',scene.task)
+            task=load_task(shape,agents=5)
+            core=CandidateController(task,tuple('abcde'))
+            self.assertNotIn('assigned_goals',task)
             p=hover_grid(5)
             with patch('tdfc_lab.research.curve_ego_interface.curve_acceleration',wraps=curve_acceleration) as nominal:
-                scene.command(p,np.zeros_like(p),0.)
+                core.step(dict(position=p,velocity=np.zeros_like(p),measurement_time=0.,own_velocities=np.zeros_like(p),own_times=[0.]*5),0.)
                 self.assertEqual(nominal.call_count,5)
 
     def test_letter_prior_is_weighted_strokes_not_five_assigned_targets(self):

@@ -126,10 +126,10 @@ def run_suite(output, steps=3000):
     import hashlib
     import csv
     output=Path(output);output.mkdir(parents=True,exist_ok=False)
-    matrix=[('ring',4),('ring',6),('helix',4),('helix',6),('R',5),('A',5),('L',5)]
+    matrix=[('ring',4),('ring',6),('helix',4),('helix',6)]
     plan=dict(matrix=matrix,seeds=[0,1,2],steps=steps,dt=.02,initialization='common-height grid + <=1cm XY jitter',
               observations='exact synchronous numerical states',model='velocity-loop model, NOT firmware SIL',
-              success='last >=1s: curve max error<=5cm, C(0.48m)>=0.9 or letter stroke max error<=5cm; max speed<=0.05m/s')
+              success='last >=1s: curve max error<=5cm, C(0.48m)>=0.9; max speed<=0.05m/s')
     (output/'plan.json').write_text(json.dumps(plan,indent=2)+'\n')
     rows=[]
     for shape,n in matrix:
@@ -159,11 +159,11 @@ def run_suite(output, steps=3000):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--shape', choices=['ring', 'tilted_ring', 'helix', 'R', 'A', 'L'], default='ring')
-    parser.add_argument('--agents', type=int, help='4/6 for curves, 5 for letters')
+    parser.add_argument('--shape', choices=['ring', 'helix'], default='ring')
+    parser.add_argument('--agents', type=int, choices=[4,6],default=4,help='four or six agents')
     parser.add_argument('--seed', type=int, help='jittered common-height grid seed')
     parser.add_argument('--trace', help='save pos/vel/time NPZ')
-    parser.add_argument('--suite',action='store_true',help='seven scenes x three fixed seeds')
+    parser.add_argument('--suite',action='store_true',help='four curve scenes x three fixed seeds')
     parser.add_argument('--out',help='new result directory for --suite')
     parser.add_argument('--steps', type=int, default=200)
     parser.add_argument('--replay', help='portable aligned-observation NPZ; schema in README')
@@ -175,7 +175,7 @@ def main():
     if args.suite:
         if not args.out:parser.error('--suite requires --out (new directory)')
         print(json.dumps(run_suite(args.out,args.steps),indent=2));return
-    agents = args.agents if args.agents is not None else (5 if args.shape in ('R','A','L') else 4)
+    agents = args.agents
     from .scenarios import validate_scene
     validate_scene(args.shape, agents)
     result = (replay(args.replay, load_task(args.shape, agents=agents)) if args.replay

@@ -13,8 +13,8 @@ from launch_ros.parameter_descriptions import ParameterValue
 def generate_launch_description():
     package = Path(get_package_share_directory('tdfc_lab'))
     return LaunchDescription([
-        DeclareLaunchArgument('shape',default_value='ring',choices=['ring','helix','R','A','L']),
-        DeclareLaunchArgument('agents',default_value='4',choices=['4','5','6']),
+        DeclareLaunchArgument('shape',default_value='ring',choices=['ring','helix']),
+        DeclareLaunchArgument('agents',default_value='4',choices=['4','6']),
         DeclareLaunchArgument('seed',default_value='0'),
         DeclareLaunchArgument('formation_seconds',default_value='60.0'),
         DeclareLaunchArgument('rviz',default_value='True'),

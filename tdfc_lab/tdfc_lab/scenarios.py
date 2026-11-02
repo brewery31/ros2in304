@@ -5,16 +5,14 @@ from .research.sim_protocol import clip_norm
 from .research.orca_adapter import orca_velocity
 from .research.directional_governor import DirectionalGovernor
 
-SCENES = ('ring', 'helix', 'R', 'A', 'L')
+SCENES = ('ring', 'helix')
 ROBOT_NAMES = ('cf5', 'cf6', 'cf7', 'cf8', 'cf9', 'cfA')
 
 
 def validate_scene(shape, agents):
-    if shape in ('ring', 'helix', 'tilted_ring') and agents in (4, 6):
+    if shape in SCENES and agents in (4, 6):
         return
-    if shape in ('R', 'A', 'L') and agents == 5:
-        return
-    raise ValueError('ring/helix: --agents 4 or 6; R/A/L: --agents 5')
+    raise ValueError('active experiments: ring/helix with four or six agents; letters archived')
 
 
 def hover_grid(agents, seed=None, height=1.2):

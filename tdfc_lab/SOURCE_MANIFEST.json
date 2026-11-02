@@ -107,5 +107,18 @@
     },
     "hardware_flights": 0,
     "scope": "local curve/stroke algorithm for all formations, no assignment"
+  },
+  "active_scope": {
+    "based_on": "9eba8b0",
+    "shapes": [
+      "ring",
+      "helix"
+    ],
+    "populations": [
+      4,
+      6
+    ],
+    "letters": "archived, no active entry",
+    "control_law_changed": false
   }
 }

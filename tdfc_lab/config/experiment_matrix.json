@@ -1,5 +1,5 @@
 {
-  "scope": "same local curve/stroke control for all formations; no centralized matching; simulation first",
+  "scope": "active: ring/helix x four/six agents; local algorithm; simulation before real",
   "curves": [
     {
       "shape": "ring",
@@ -18,24 +18,5 @@
       "agents": 6
     }
   ],
-  "letters": [
-    {
-      "shape": "R",
-      "agents": 5,
-      "method": "curve_ours",
-      "target_type": "public_stroke_graph_no_assignment"
-    },
-    {
-      "shape": "A",
-      "agents": 5,
-      "method": "curve_ours",
-      "target_type": "public_stroke_graph_no_assignment"
-    },
-    {
-      "shape": "L",
-      "agents": 5,
-      "method": "curve_ours",
-      "target_type": "public_stroke_graph_no_assignment"
-    }
-  ]
+  "archived": "letter experiments discontinued by user; historical results retained"
 }

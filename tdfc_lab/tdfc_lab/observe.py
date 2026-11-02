@@ -20,6 +20,8 @@ def main(args=None):
             self.declare_parameter('expected_frame', 'world')
             self.declare_parameter('log_path', 'tdfc_candidate.jsonl')
             names = tuple(self.get_parameter('robot_names').value)
+            from .scenarios import validate_scene
+            validate_scene(self.get_parameter('shape').value,len(names))
             self.frame = self.get_parameter('expected_frame').value
             self.buffer = StateBuffer(names)
             self.task = load_task(self.get_parameter('shape').value, agents=len(names))

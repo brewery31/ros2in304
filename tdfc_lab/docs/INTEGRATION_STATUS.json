@@ -1,7 +1,7 @@
 {
   "date": "2026-11-02",
   "branch": "codex/tdfc-lab-integration",
-  "based_on": "63ff2a2",
+  "based_on": "9eba8b0",
   "unit_tests_passed": 24,
   "numerical_runs": 21,
   "numerical_terminal_successes": 12,
@@ -13,5 +13,21 @@
   "letter_method": "same local curve/stroke controller; no assignment",
   "letter_successes": 0,
   "letter_runs": 9,
-  "current_results": "results/local_strokes_20261102"
+  "current_results": "results/local_strokes_20261102",
+  "active_shapes": [
+    "ring",
+    "helix"
+  ],
+  "active_populations": [
+    4,
+    6
+  ],
+  "active_scene_count": 4,
+  "planned_suite_runs": 12,
+  "letter_status": "discontinued by explicit user request; failures archived",
+  "last_validation_batch": "results/local_strokes_20261102 (mixed historical batch, 21 records)",
+  "last_validation_curves_only": {
+    "runs": 12,
+    "terminal_successes": 12
+  }
 }
